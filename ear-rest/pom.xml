@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>RestCase</artifactId>
+        <groupId>ru.shu</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>ear-rest</artifactId>
+    <packaging>ear</packaging>
+
+    <properties>
+        <fileName>restcase</fileName>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>ru.shu</groupId>
+            <artifactId>RestCase-war</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>ru.shu</groupId>
+            <artifactId>RestCase-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>ru.shu</groupId>
+            <artifactId>RestCase-jpa</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>ru.shu</groupId>
+            <artifactId>RestCase-ejb-rest</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>ejb</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>2.10.1</version>
+                <configuration>
+                    <!--<earName>dbcopy-${project.version}</earName>-->
+                    <earName>${fileName}</earName>
+                    <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <archive>
+                        <manifestEntries />
+                    </archive>
+                    <packagingExcludes />
+                    <modules>
+                        <jarModule>
+                            <groupId>ru.shu</groupId>
+                            <artifactId>RestCase-common</artifactId>
+                        </jarModule>
+                        <jarModule>
+                            <groupId>ru.shu</groupId>
+                            <artifactId>RestCase-jpa</artifactId>
+                        </jarModule>
+                        <ejbModule>
+                            <groupId>ru.shu</groupId>
+                            <artifactId>RestCase-ejb-rest</artifactId>
+                        </ejbModule>
+                        <webModule>
+                            <groupId>ru.shu</groupId>
+                            <artifactId>RestCase-war</artifactId>
+                            <contextRoot>/</contextRoot>
+                        </webModule>
+                    </modules>
+                </configuration>
+            </plugin>
+            <!--РёР·РјРµРЅРµРЅРёРµ persistence.xml-->
+            <!--            <plugin>
+                            <artifactId>maven-resources-plugin</artifactId>
+                            <version>2.7</version>
+                            <executions>
+                                <execution>
+                                    <id>copy-resource-one</id>
+                                    <phase>install</phase>
+                                    <goals>
+                                        <goal>copy-resources</goal>
+                                    </goals>
+                                    <configuration>
+                                        <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/META-INF</outputDirectory>
+                                        <resources>
+                                            <resource>
+                                                <directory>c:/ideapr/DbCopy/DbCopy-jpa/src/main/java/META-INF</directory>
+                                                <includes>
+                                                    <include>persistence.xml</include>
+                                                </includes>
+                                            </resource>
+                                        </resources>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${deploy.path}</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}</directory>
+                                    <includes>
+                                        <include>${fileName}.${project.packaging}</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
